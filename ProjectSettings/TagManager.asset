@@ -7,6 +7,7 @@ TagManager:
   - Vida
   - Bonus
   - Star
+  - Veloci
   layers:
   - Default
   - TransparentFX

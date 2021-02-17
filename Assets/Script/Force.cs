@@ -13,11 +13,13 @@ public class Force : MonoBehaviour
     private float eixoVertical;
     //valor para coordenada de x
     private float eixoHorizontal;
+
     [SerializeField] public float velocidade = .0f;
     private string mensagem;
     private string msg;
     private int vida = 5;
     private int bonus = 0;
+    private int danos = 0;
     Vector3 posiInicial;
     [SerializeField] public Text info;
   
@@ -41,7 +43,7 @@ public class Force : MonoBehaviour
     private void FixedUpdate()
     {
         
-        //quardar informação das teclas
+        //guardar informação das teclas
         eixoHorizontal = Input.GetAxis("Horizontal");
         eixoVertical = Input.GetAxis("Vertical");
 
@@ -51,7 +53,8 @@ public class Force : MonoBehaviour
         //adicionar força para o movimento
         refRigidbody.AddForce(vetor * velocidade);//mais velocidade 
 
-        msg = "\n Vidas: " + vida.ToString() + "\n Bonus: " + bonus.ToString();
+        msg = "\n Danos: " + danos.ToString() + "\n Bonus: " + bonus.ToString();
+       
          
         info.text = mensagem + msg;
 
@@ -60,17 +63,10 @@ public class Force : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.CompareTag("Vida"))
-        {
-            mensagem = "Ganhou Vida";
-            other.gameObject.SetActive(false);
-            
-            vida++;
-        }
-
-        if (other.gameObject.CompareTag("Bonus"))
+        if (other.gameObject.CompareTag("Veloci"))
         {
             mensagem = "Ganhou Bônus";
+           
             other.gameObject.SetActive(false);
             bonus = bonus + 10;
         }
@@ -82,16 +78,16 @@ public class Force : MonoBehaviour
         
         if (collision.gameObject.CompareTag("Star"))
         {
-            inicio();
-            mensagem = "Perdeu Vida";
+            mensagem = "Recebe danos";
+            
 
-            vida--;
+            danos = danos + 5;
             
             
-            if (vida <= 0)
+            if (danos >= 20)
             {
                 mensagem = "Fim de Jogo";
-                msg = "\nVidas: " + vida.ToString() + "\nBonus: " + bonus.ToString();
+                msg = "\nDanos: " + danos.ToString() + "\nBonus: " + bonus.ToString();
                 info.text = mensagem + msg;
                 this.gameObject.SetActive(false);
                 
@@ -103,11 +99,7 @@ public class Force : MonoBehaviour
     private void inicio()
     {
 
-        posiInicial.x = 0.0f;
-        posiInicial.y = 0.0f;
-        posiInicial.z = 0.0f;
-
-        transform.position = posiInicial;
+         
     }
 
 }
